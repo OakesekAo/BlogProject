@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BlogProject.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System;
@@ -44,7 +45,7 @@ namespace BlogProject.Models
         public DateTime? Updated { get; set; }
 
         //flag used to determine if its posted or hidden to public view
-        public bool IsReady { get; set; }
+        public ReadyStatus ReadyStatus { get; set; }
         //Slug value 
         public string Slug { get; set; }
 
