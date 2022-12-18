@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -50,5 +54,12 @@ namespace BlogProject.Models
         //property to be excluded from the DB
         [NotMapped]
         public IFormFile Image { get; set; }
+
+        //Navigation property Child to Blog model
+        public virtual Blog Blog { get; set; }
+        public virtual IdentityUser Author { get; set; }
+        //Parent to Tag and Comment class model
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }

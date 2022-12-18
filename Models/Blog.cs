@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogProject.Models
 {
+    //Child to the IdentityUser
     public class Blog
     {
         //Id of the blog entery
@@ -40,6 +44,11 @@ namespace BlogProject.Models
 
         [NotMapped]
         public IFormFile Image { get; set; }
+
+        //Navigation property - Child to IdentityUser
+        public virtual IdentityUser Author { get; set; }
+        //Parent to a collection of Posts
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 
     }
 }

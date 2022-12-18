@@ -28,7 +28,7 @@ namespace BlogProject.Models
         [Display(Name = "Moderated Comment")]
         public string ModerateBody { get; set; }
 
-        //Navigation properties
+        //Navigation properties - Comment is Child to Post model
         public virtual Post Post { get; set; }
         public virtual IdentityUser Author { get; set; }
         public virtual IdentityUser Moderator { get; set; }
