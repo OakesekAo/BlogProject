@@ -14,7 +14,7 @@ namespace BlogProject.Models
         //Id of the blog entery
         public int Id { get; set; }
         //author of the entry
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
         //Title/Description entry
         [Required]
         //passing an error message with 0 = name of variable, 2 = minimumLength value, 1 = 100
@@ -46,7 +46,7 @@ namespace BlogProject.Models
         public IFormFile Image { get; set; }
 
         //Navigation property - Child to IdentityUser
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
         //Parent to a collection of Posts
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 

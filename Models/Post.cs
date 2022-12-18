@@ -18,7 +18,7 @@ namespace BlogProject.Models
         //FK for the blog Id
         public int BlogId { get; set; }
         //FK for the author
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
 
         //Title of blog
         [Required]
@@ -58,7 +58,7 @@ namespace BlogProject.Models
 
         //Navigation property Child to Blog model
         public virtual Blog Blog { get; set; }
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
         //Parent to Tag and Comment class model
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();

@@ -8,7 +8,7 @@ namespace BlogProject.Models
         //Model handling the needed data for taging a blog with a topic of interest
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
 
         [Required]
         [StringLength(25, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 2)]
@@ -16,7 +16,7 @@ namespace BlogProject.Models
 
         //Navigation properties - Chold to Post
         public virtual Post Post { get; set; }
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
 
     }
 }

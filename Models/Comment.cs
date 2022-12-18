@@ -11,7 +11,7 @@ namespace BlogProject.Models
         /// This is the comment model section. All the needed data properties for the section that handles the comments and tied to the blog topic
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 
         [Required]
@@ -34,7 +34,7 @@ namespace BlogProject.Models
 
         //Navigation properties - Comment is Child to Post model
         public virtual Post Post { get; set; }
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
         public virtual BlogUser Moderator { get; set; }
 
     }
