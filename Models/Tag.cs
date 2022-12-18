@@ -16,7 +16,7 @@ namespace BlogProject.Models
 
         //Navigation properties - Chold to Post
         public virtual Post Post { get; set; }
-        public virtual IdentityUser Author { get; set; }
+        public virtual BlogUser Author { get; set; }
 
     }
 }

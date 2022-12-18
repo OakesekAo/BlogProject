@@ -46,7 +46,7 @@ namespace BlogProject.Models
         public IFormFile Image { get; set; }
 
         //Navigation property - Child to IdentityUser
-        public virtual IdentityUser Author { get; set; }
+        public virtual BlogUser Author { get; set; }
         //Parent to a collection of Posts
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 
