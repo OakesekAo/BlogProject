@@ -6,6 +6,8 @@ namespace BlogProject.Models
 {
     public class Comment
     {
+
+        /// This is the comment model section. All the needed data properties for the section that handles the comments and tied to the blog topic
         public int Id { get; set; }
         public int PostId { get; set; }
         public string AuthorId { get; set; }
