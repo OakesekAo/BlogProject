@@ -16,6 +16,7 @@ namespace BlogProject.Models
         //primary key
         public int Id { get; set; }
         //FK for the blog Id
+        [Display(Name ="Blog Name")]
         public int BlogId { get; set; }
         //FK for the author
         public string BlogUserId { get; set; }
