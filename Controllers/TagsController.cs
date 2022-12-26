@@ -41,13 +41,13 @@ namespace BlogProject.Controllers
             return View(tag);
         }
 
-        // GET: Tags/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-            return View();
-        }
+        //// GET: Tags/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
+        //    return View();
+        //}
 
         // POST: Tags/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
