@@ -82,7 +82,7 @@ namespace BlogProject.Services
             //Step 1 repeat: Create the moderator user
             var modUser = new BlogUser()
             {
-                Email = "oakes.a@live.com",
+                Email = "dr_whooo@msn.com",
                 UserName = "ModOakes",
                 FirstName = "Andrew",
                 LastName = "Oakes",

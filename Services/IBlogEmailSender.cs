@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BlogProject.Services
 {
-    interface IBlogEmailSender : IEmailSender
+    public interface IBlogEmailSender : IEmailSender
     {
         Task SendContactEmailAsync(string emailFrom, string name, string subject, string htmlMessage);
     }
