@@ -18,7 +18,7 @@ namespace BlogProject.Services
             //takes image out of DB and returns a usable string
             if (data is null || type is null) return null;
             //return string interpolation
-            return $"data:imgae/{type};base64,{Convert.ToBase64String(data)}";
+            return $"data:image/{type};base64,{Convert.ToBase64String(data)}";
         }
 
         public async Task<byte[]> EndcodeImageAsync(IFormFile file)
