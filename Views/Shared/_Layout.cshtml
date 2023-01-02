@@ -21,8 +21,12 @@
     <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
 
+    <!-- reference summernote-->
+    <link href="~/css/summernote-lite.min.css" rel="stylesheet" />
+
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+
 
 </head>
 <body>
@@ -57,10 +61,9 @@
         </div>
     </header>
     <!-- Main Content-->
-    
-        <!--<div class="container px-4 px-lg-5">-->
-        @RenderBody()
-    
+    <!--<div class="container px-4 px-lg-5">-->
+    @RenderBody()
+
     <!-- Footer-->
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
@@ -103,6 +106,9 @@
     <script src="~/js/scripts.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!--    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>-->
+    <!--Summernote-->
+    <script src="~/js/summernote-lite.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
