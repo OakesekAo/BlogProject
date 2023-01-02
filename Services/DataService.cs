@@ -64,6 +64,7 @@ namespace BlogProject.Services
                 UserName = "oakes.a@live.com",
                 FirstName = "Andrew",
                 LastName = "Oakes",
+                DisplayName = "AdminOakes",
                 PhoneNumber = "1234567890",
                 EmailConfirmed = true
             };
@@ -81,6 +82,7 @@ namespace BlogProject.Services
                 UserName = "ModOakes",
                 FirstName = "Andrew",
                 LastName = "Oakes",
+                DisplayName = "ModOakes",
                 PhoneNumber = "1234567890",
                 EmailConfirmed = true
             };
