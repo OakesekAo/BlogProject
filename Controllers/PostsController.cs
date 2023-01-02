@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
+using BlogProject.Services;
 
 namespace BlogProject.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISlugService _slugService;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, ISlugService slugService)
         {
             _context = context;
+            _slugService = slugService;
         }
 
         // GET: Posts
@@ -59,11 +62,22 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+
+                //Create the slug and determine if it is unique
+                var slug = _slugService.UrlFriendly(post.Title);
+                if (!_slugService.IsUnique(slug))
+                {
+                    ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug.");
+                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    return View(post);
+                }
+
+                post.Slug = slug;
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
@@ -76,19 +90,23 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(p => p.Tags)
+                .FirstOrDefaultAsync(p => p.Slug == slug);
+
             if (post == null)
             {
                 return NotFound();
             }
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
 
             return View(post);
         }
@@ -132,9 +150,9 @@ namespace BlogProject.Controllers
         }
 
         // GET: Posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
@@ -142,7 +160,7 @@ namespace BlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
