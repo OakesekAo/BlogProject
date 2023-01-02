@@ -3,6 +3,7 @@ using BlogProject.Enums;
 using BlogProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace BlogProject.Services
 
         public async Task ManageDataAsync()
         {
+            //Task: Create the DB from the Migrations
+            await _dbContext.Database.MigrateAsync();
+
             //1. Seeding a few Roles into the system
             await SeedRolesAsync();
 
