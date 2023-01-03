@@ -20,9 +20,9 @@ namespace BlogProject
 
             //Pull out my registered DataService
             var dataService = host.Services
-                .CreateScope()
-                .ServiceProvider
-                .GetRequiredService<DataService>();
+                                    .CreateScope()
+                                    .ServiceProvider
+                                    .GetRequiredService<DataService>();
 
             await dataService.ManageDataAsync();
 
