@@ -32,7 +32,7 @@
         {
             <tr>
                 <td>
-                    <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" />
+                    <img class="img-fluid" width="200px;" src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
