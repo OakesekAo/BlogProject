@@ -136,14 +136,21 @@ namespace BlogProject.Controllers
             {
                 try
                 {
-                    post.Updated = DateTime.Now;
+                    var newPost = await _context.Posts.FindAsync(post.Id);
+
+                    newPost.Updated = DateTime.Now;
+                    newPost.Title = post.Title;
+                    newPost.Abstract = post.Abstract;
+                    newPost.Content = post.Content;
+                    newPost.ReadyStatus = post.ReadyStatus;
+
                     if (newImage is not null)
                     {
-                        post.ImageData = await _imageService.EndcodeImageAsync(newImage);
-                        post.ContentType = _imageService.ConetentType(newImage);
+                        newPost.ImageData = await _imageService.EndcodeImageAsync(newImage);
+                        newPost.ContentType = _imageService.ConetentType(newImage);
 
                     }
-                    _context.Update(post);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
