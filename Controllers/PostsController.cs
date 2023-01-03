@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
 using BlogProject.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogProject.Controllers
 {
@@ -15,11 +16,13 @@ namespace BlogProject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: Posts
@@ -67,6 +70,12 @@ namespace BlogProject.Controllers
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+
+                // use the _ImageService to store the incoming user specified image
+                post.ImageData = await _imageService.EndcodeImageAsync(post.Image);
+                post.ContentType = _imageService.ConetentType(post.Image);
+
+
 
                 //Create the slug and determine if it is unique
                 var slug = _slugService.UrlFriendly(post.Title);
@@ -116,7 +125,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string slug, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post)
+        public async Task<IActionResult> Edit(string slug, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage)
         {
             if (slug != post.Slug)
             {
@@ -128,6 +137,12 @@ namespace BlogProject.Controllers
                 try
                 {
                     post.Updated = DateTime.Now;
+                    if (newImage is not null)
+                    {
+                        post.ImageData = await _imageService.EndcodeImageAsync(newImage);
+                        post.ContentType = _imageService.ConetentType(newImage);
+
+                    }
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
