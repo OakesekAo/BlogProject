@@ -18,5 +18,25 @@
 
 
 
+<hr />
+<article>
+
+    <div class="row">
+        <div class="col text-center font-weight-bold h3">
+            Custom Post Tags
+        </div>
+        <div class="row">
+            <div class="col">
+                @foreach(var tag in Model.Tags)
+                {
+                    <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                }
+            </div>
+        </div>
+    </div>
+</article>
+<hr />
+
+
 <!-- Displaying Comments related to this post-->
 <!-- display the image of the comment's author-->

@@ -38,7 +38,7 @@ namespace BlogProject.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
-            if (slug == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -46,6 +46,7 @@ namespace BlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
@@ -95,6 +96,7 @@ namespace BlogProject.Controllers
                 post.Slug = slug;
 
                 _context.Add(post);
+                await _context.SaveChangesAsync();
 
                 //how do i loop through the incoming list of string
                 foreach (var tagText in tagValues)
