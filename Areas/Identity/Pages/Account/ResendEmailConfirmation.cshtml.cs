@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using BlogProject.Models;
 using BlogProject.Services;
 
 namespace BlogProject.Areas.Identity.Pages.Account
