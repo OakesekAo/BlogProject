@@ -148,7 +148,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string slug, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage)
+        public async Task<IActionResult> Edit(string slug, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage, List<string> tagValues)
         {
             if (slug != post.Slug)
             {
@@ -159,7 +159,8 @@ namespace BlogProject.Controllers
             {
                 try
                 {
-                    var newPost = await _context.Posts.FindAsync(post.Id);
+                    var newPost = await _context.Posts.Include(p => p.Tags)
+                        .FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now;
                     newPost.Title = post.Title;
@@ -173,6 +174,22 @@ namespace BlogProject.Controllers
                         newPost.ContentType = _imageService.ConetentType(newImage);
 
                     }
+
+
+                    //remove all tags previously associated with this Post
+                    _context.Tags.RemoveRange(newPost.Tags);
+
+                    //add in the new tags from the edit form
+                    foreach (var tagText in tagValues)
+                    {
+                        _context.Add(new Tag()
+                        {
+                            PostId = post.Id,
+                            BlogUserId = newPost.BlogUserId,
+                            Text = tagText
+                        });
+                    }
+
 
                     await _context.SaveChangesAsync();
                 }
