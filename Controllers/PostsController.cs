@@ -251,9 +251,14 @@ namespace BlogProject.Controllers
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string slug)
+        public async Task<IActionResult> DeleteConfirmed(int Id)
         {
-            var post = await _context.Posts.FindAsync(slug);
+
+            if (Id == null)
+            {
+                return NotFound();
+            }
+            var post = await _context.Posts.FindAsync(Id);
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
