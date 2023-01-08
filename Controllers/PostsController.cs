@@ -176,6 +176,7 @@ namespace BlogProject.Controllers
             {
                 try
                 {
+                    //the orriginalPost
                     var newPost = await _context.Posts.Include(p => p.Tags)
                         .FirstOrDefaultAsync(p => p.Id == post.Id);
 
@@ -185,6 +186,22 @@ namespace BlogProject.Controllers
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
 
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    if(newSlug != newPost.Slug)
+                    {
+                        if(_slugService.IsUnique(newSlug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug.");
+                            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
+                            return View(post);
+                        }
+                    }
+
                     if (newImage is not null)
                     {
                         newPost.ImageData = await _imageService.EndcodeImageAsync(newImage);
@@ -192,6 +209,7 @@ namespace BlogProject.Controllers
 
                     }
 
+                    await _context.SaveChangesAsync();
 
                     //remove all tags previously associated with this Post
                     _context.Tags.RemoveRange(newPost.Tags);

@@ -12,6 +12,7 @@
     <div class="col-lg-8 col-md-10 mx-auto">
 
         <form asp-action="Edit" enctype="multipart/form-data">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -87,6 +88,7 @@
 
 @section Scripts {
 
+    <script src="~/js/custom.js"></script>
     <script>
 
         let tagValues = '@ViewData["TagValues"]';
@@ -97,5 +99,4 @@
         });
     </script>
 
-    <script src="~/js/custom.js"></script>
 }
