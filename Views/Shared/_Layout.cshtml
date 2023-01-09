@@ -25,6 +25,7 @@
     <!-- reference summernote-->
     <link href="~/css/summernote-lite.min.css" rel="stylesheet" />
 
+
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/styles.css" rel="stylesheet" />
 
@@ -45,7 +46,10 @@
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a>
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Posts" asp-action="Index">Posts</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a>
@@ -116,8 +120,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 
-    <!--Summernote-->
-    <script src="~/js/summernote-lite.min.js"></script>
+    <!--Summernote-->@*
+    <script src="~/js/summernote-lite.min.js"></script>*@
+    <!-- CKeditor-->
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
+
+
 
     <!-- Sweet Alert 2-->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

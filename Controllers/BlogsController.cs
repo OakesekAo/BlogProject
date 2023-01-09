@@ -67,7 +67,7 @@ namespace BlogProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 blog.Created = DateTime.Now;
                 blog.BlogUserId = _userManager.GetUserId(User);
