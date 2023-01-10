@@ -34,7 +34,7 @@ function DeleteTag() {
         });
         return true;
 
-        
+
     }
 
     while (tagCount > 0) {

@@ -97,13 +97,13 @@ namespace BlogProject.Controllers
                 }
 
                 //Detect Incoming duplicate Slugs
-                if(!_slugService.IsUnique(slug))
+                if (!_slugService.IsUnique(slug))
                 {
                     validationError = true;
                     ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug.");
                 }
 
-                if(validationError)
+                if (validationError)
                 {
                     ViewData["TagValues"] = string.Join(",", tagValues);
                     return View(post);
@@ -187,9 +187,9 @@ namespace BlogProject.Controllers
                     newPost.ReadyStatus = post.ReadyStatus;
 
                     var newSlug = _slugService.UrlFriendly(post.Title);
-                    if(newSlug != newPost.Slug)
+                    if (newSlug != newPost.Slug)
                     {
-                        if(_slugService.IsUnique(newSlug))
+                        if (_slugService.IsUnique(newSlug))
                         {
                             newPost.Title = post.Title;
                             newPost.Slug = newSlug;

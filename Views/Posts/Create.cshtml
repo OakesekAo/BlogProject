@@ -88,31 +88,15 @@
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
-@section Scripts{
-
-    <script src="~/js/custom.js"></script>
-
-
+@section Scripts {
 
     <script>
         let tagValues = '@ViewData["TagValues"]';
-
-
-        ClassicEditor
-            .create(document.querySelector('#Content'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-@*
-    <script>
-
         //Default font size but not for placeholder...
         $('#Content').summernote({
             placeholder: "Post Body"
         });
-    </script>*@
+    </script>
 
-
-
+    <script src="~/js/custom.js"></script>
 }
