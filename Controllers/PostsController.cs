@@ -97,11 +97,15 @@ namespace BlogProject.Controllers
                 }
 
                 //Detect Incoming duplicate Slugs
-                if (!_slugService.IsUnique(slug))
+                else if (!_slugService.IsUnique(slug))
                 {
                     validationError = true;
                     ModelState.AddModelError("Title", "The Title you provided cannot be used as it results in a duplicate slug.");
                 }
+
+
+
+
 
                 if (validationError)
                 {
@@ -115,7 +119,7 @@ namespace BlogProject.Controllers
                 _context.Add(post);
                 await _context.SaveChangesAsync();
 
-                //how do i loop through the incoming list of string
+                //Loop through the incoming list of tags
                 foreach (var tagText in tagValues)
                 {
                     _context.Add(new Tag()
