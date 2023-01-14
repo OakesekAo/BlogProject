@@ -29,6 +29,7 @@ namespace BlogProject.Controllers
             _context = context;
         }
 
+
         public async Task<IActionResult> Index(int? page)
         {
             var pageNumber = page ?? 1;
@@ -40,14 +41,15 @@ namespace BlogProject.Controllers
             //    .ToPagedListAsync(pageNumber, pageSize);
 
             var blogs = _context.Blogs
+                    .Include(b => b.BlogUser)
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
-            return View(blogs);
-
-
+            return View(await blogs);
 
         }
+
+
 
         public IActionResult About()
         {

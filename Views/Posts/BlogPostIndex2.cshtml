@@ -1,0 +1,95 @@
+﻿@using BlogProject.Models
+@using BlogProject.Services
+@using BlogProject.Enums
+@using Microsoft.AspNetCore.Identity;
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<Post>
+
+@inject IImageService imageService
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<section class="">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header d-flex justify-content-between align-items-center">
+            <div class="date">
+                @DateTime.Now.ToString("hh:mm:ss tt")
+            </div>
+            <div class="date">@DateTime.UtcNow.DayOfWeek.ToString() @DateTime.UtcNow.ToString("MMM dd, yyyy")</div>
+
+        </div>
+        <div class="text-center section-header">
+        </div>
+        <div class="text-center section-header">
+            <div class="row">
+
+                <div class="col-12">
+                    <img src="~/images/CodingWeblogLogo1.png" class="img-fluid" />
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-9">
+                @foreach (var post in Model)
+                {
+                    <div class="d-lg-flex post-entry-1 border-bottom border-dark">
+                        <a asp-action="Details" asp-route-slug="@post.Slug" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
+                            <img src="@imageService.DecodeImage(post.ImageData,  post.ContentType)" alt="" class="img-fluid">
+                        </a>
+                        <div>
+                            <div class="post-meta"><span class="date"></span> <span class="mx-1">&bullet;</span> <span>@post.Created.ToString("MMM dd, yyyy")</span></div>
+                            <h3><a asp-action="Details" asp-route-slug="@post.Slug">@post.Title</a></h3>
+                            <p>@post.Abstract</p>
+                            <div class="d-flex align-items-center author mb-2">
+                                <div class="photo">
+                                    <img src="@imageService.DecodeImage(post.BlogUser.ImageData, post.BlogUser.ContentType)"
+                                     alt="@post.BlogUser.FullName"
+                                     class="rounded-pill img-thumbnail img-fluid"
+                                     style="width:60px;">
+                                </div>
+                                <div class="">
+                                    <h5 class="m-0 p-0">@post.BlogUser.FullName</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+ 
+        </div>
+    </div>
+</section>
+<!-- End Culture Category Section -->
+
+<!-- Paging Controls -->
+<div class="row">
+    <div class="col h5">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        new PagedListRenderOptions
+        {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+        })
+    </div>
+</div>
+
