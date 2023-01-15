@@ -11,7 +11,7 @@ using BlogProject.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using X.PagedList;
-using BlogProject.Enums
+using BlogProject.Enums;
 
 namespace BlogProject.Controllers
 {
@@ -29,6 +29,34 @@ namespace BlogProject.Controllers
             _imageService = imageService;
             _userManager = userManager;
         }
+
+
+        public async Task<IActionResult> SearchIndex(int? page, string searchTerm)
+        {
+            ViewData["SearchTerm"] = searchTerm;
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();
+            if(searchTerm != null)
+            {
+                posts = posts.Where(
+                    p => p.Title.Contains(searchTerm) ||
+                    p.Abstract.Contains(searchTerm) ||
+                    p.Content.Contains(searchTerm) ||
+                    p.Comments.Any(c => c.Body.Contains(searchTerm) ||
+                                        c.ModerateBody.Contains(searchTerm) ||
+                                        c.BlogUser.FirstName.Contains(searchTerm) ||
+                                        c.BlogUser.LastName.Contains(searchTerm) ||
+                                        c.BlogUser.Email.Contains(searchTerm)));
+            }
+
+            posts = posts.OrderByDescending(p => p.Created);
+            return View(await posts.ToPagedListAsync(pageNumber, pageSize));
+
+        }
+
 
         // GET: Posts
         public async Task<IActionResult> Index()
