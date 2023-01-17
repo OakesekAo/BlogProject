@@ -34,6 +34,46 @@ namespace BlogProject.Controllers
             return View("Index", await moderatedComments);
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment)
+        {
+            if (id != comment.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var newComment = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == comment.Id);
+                try
+                {
+                    newComment.ModerateBody = comment.ModerateBody;
+                    newComment.ModerationType = comment.ModerationType;
+
+                    newComment.Moderated = DateTime.Now;
+                    newComment.ModeratorId = _userManager.GetUserId(User);
+
+                    await _context.SaveChangesAsync();
+                }
+                catch(DbUpdateConcurrencyException)
+                {
+                    if (!CommentExists(comment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = newComment.Post.Slug }, "commentSection");
+            }
+            return View(comment);
+
+        }
         //public async Task<IActionResult> DeletedIndex()
         //{
         //
@@ -87,7 +127,7 @@ namespace BlogProject.Controllers
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = comment.Post.Slug }, "commentSection");
             }
 
             return View(comment);
@@ -145,7 +185,7 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "Post", new { slug = newComment.Post.Slug }, "commentSection");
+                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = comment.Post.Slug }, "commentSection");
             }           
             return View(comment);
         }
