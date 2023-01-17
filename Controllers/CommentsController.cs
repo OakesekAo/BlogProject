@@ -185,7 +185,7 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = comment.Post.Slug }, "commentSection");
+                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = newComment.Post.Slug }, "commentSection");
             }           
             return View(comment);
         }
