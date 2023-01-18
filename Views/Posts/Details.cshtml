@@ -17,10 +17,10 @@
 <div class="container">
     <article>
         <div class="row">
-            <div class="col-9 border-right">
+            <div class="col">
                 @Html.Raw(Model.Content)
             </div>
-            <div class="col-3 text-center font-weight-bold h6">
+@*            <div class="col-3 text-center font-weight-bold h6">
                 <div class="card">
                     <img class="card-img-top" src="/img/tag.jpg" alt="Tags...">
                     <div class="card-body">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
 
     </article>
@@ -159,6 +159,7 @@
                     @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == UserManager.GetUserId(User))
                     {
                         <hr>
+
                         <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
                     }
 
@@ -200,6 +201,7 @@
                         <div class="modal-body">
                             <form asp-action="Edit" asp-controller="Comments">
                                 @Html.Hidden("Id", comment.Id)
+                                @Html.Hidden("Slug", comment.Post.Slug)
 
                                 <div class="form-group">
                                     <textarea name="Body" class="form-control" required>@comment.Body</textarea>
@@ -233,7 +235,7 @@
                             <form asp-action="Moderate" asp-controller="Comments">
                                 @Html.Hidden("Id", comment.Id)
                                 @Html.Hidden("Body", comment.Body)
-
+                                @Html.Hidden("Slug", comment.Post.Slug)
                                 <div class="form-group">
                                     <label class="control-label">Original Comment</label>
                                     <textarea disabled class="form-control" style="resize:none">@comment.Body</textarea>
@@ -252,6 +254,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col">
+
                                             <button class="btn-sm btn-block btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
                                         </div>
                                         <div class="col">

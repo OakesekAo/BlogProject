@@ -83,7 +83,7 @@ namespace BlogProject.Services
             var modUser = new BlogUser()
             {
                 Email = "dr_whooo@msn.com",
-                UserName = "ModOakes",
+                UserName = "dr_whooo@msn.com",
                 FirstName = "Andrew",
                 LastName = "Oakes",
                 DisplayName = "ModOakes",

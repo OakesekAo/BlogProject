@@ -37,7 +37,7 @@ namespace BlogProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment)
+        public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment, string slug)
         {
             if (id != comment.Id)
             {
@@ -69,7 +69,7 @@ namespace BlogProject.Controllers
                     }
                 }
 
-                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = newComment.Post.Slug }, "commentSection");
+                return RedirectToAction("URLFriendly", "BlogPosts", new { slug }, "commentSection");
             }
             return View(comment);
 
@@ -157,7 +157,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Body")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Body")] Comment comment, string slug)
         {
             if (id != comment.Id)
             {
@@ -185,7 +185,8 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = newComment.Post.Slug }, "commentSection");
+                var newSlug = slug;
+                return RedirectToAction("URLFriendly", "BlogPosts/",  newSlug , "commentSection");
             }           
             return View(comment);
         }
@@ -214,12 +215,12 @@ namespace BlogProject.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string slug)
         {
             var comment = await _context.Comments.FindAsync(id);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("URLFriendly", "BlogPosts", new { slug }, "commentSection");
         }
 
         private bool CommentExists(int id)
