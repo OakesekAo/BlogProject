@@ -17,7 +17,7 @@
             </div>
             <div class="col-3 text-center font-weight-bold h6">
                 <div class="card">
-                    <img class="card-img-top" src="/img/tag.jpg" alt="Tags...">
+                    <img class="card-img-top" src="/images/tag.jpg" alt="Tags...">
                     <div class="card-body">
                         <h4 class="card-title">SYSTEM TAGS</h4>
                         <div class="tagView">
@@ -83,8 +83,8 @@
                     <h4>@comment.BlogUser.FullName</h4>
 
                     @****************************************************************
-                        SECTION 1: POST ON OR UPDATED ON
-                        *****************************************************************@
+                SECTION 1: POST ON OR UPDATED ON
+                *****************************************************************@
                     @if (comment.Deleted is not null)
                     {
                         <span class="small">
@@ -114,11 +114,11 @@
                     }
 
                     @*****************************************************************
-                        SECTION 2: HOW DO WE COMPOSE THE BODY
-                        *****************************************************************@
+                SECTION 2: HOW DO WE COMPOSE THE BODY
+                *****************************************************************@
                     @*****************************************************************
-                        SECTION 2A: Render pre text
-                        *****************************************************************@
+                SECTION 2A: Render pre text
+                *****************************************************************@
                     <br />
                     @if (comment.Deleted is not null)
                     {
@@ -132,15 +132,15 @@
                     <hr />
 
                     @*****************************************************************
-                        SECTION 2B: Render main body
-                        *****************************************************************@
+                SECTION 2B: Render main body
+                *****************************************************************@
                     @if (string.IsNullOrEmpty(comment.Body))
                     {
                         <span class="small font-italic">Comment not available...</span>
                     }
                     else if (comment.Moderated is not null)
                     {
-                        @comment.ModeratedBody
+                        @comment.ModerateBody
                     }
                     else if (comment.Deleted is null)
                     {
@@ -149,8 +149,8 @@
 
 
                     @****************************************************************
-                            SECTION 3: CAN WE RENDER THE EDIT BUTTON
-                        *****************************************************************@
+                SECTION 3: CAN WE RENDER THE EDIT BUTTON
+                *****************************************************************@
                     @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
                     {
                         <hr>
@@ -158,8 +158,8 @@
                     }
 
                     @****************************************************************
-                        SECTION 4: CAN WE RENDER THE MODERATE AND DELETE BUTTONS
-                        *****************************************************************@
+                SECTION 4: CAN WE RENDER THE MODERATE AND DELETE BUTTONS
+                *****************************************************************@
                     @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
                     {
                         <hr>
@@ -236,7 +236,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Moderated Comment</label>
-                                    <textarea required name="ModeratedBody" class="form-control">@comment.ModeratedBody</textarea>
+                                    <textarea required name="ModerateBody" class="form-control">@comment.ModerateBody</textarea>
                                 </div>
 
                                 <div class="form-group">
