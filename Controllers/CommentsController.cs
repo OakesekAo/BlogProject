@@ -127,7 +127,7 @@ namespace BlogProject.Controllers
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("URLFriendly", "BlogPosts", new { slug = comment.Post.Slug }, "commentSection");
+                return RedirectToAction(nameof(Index));
             }
 
             return View(comment);
@@ -185,8 +185,7 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
-                var newSlug = slug;
-                return RedirectToAction("URLFriendly", "BlogPosts/",  newSlug , "commentSection");
+                return RedirectToAction("Details", "Posts", new { slug = newComment.Post.Slug }, "commentSection");
             }           
             return View(comment);
         }

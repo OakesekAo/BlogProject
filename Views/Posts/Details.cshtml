@@ -1,26 +1,21 @@
-﻿@model BlogProject.Models.Post
-@using BlogProject.Enums
+﻿@using BlogProject.Enums
 @using BlogProject.Models
+@using BlogProject.Services
 @using BlogProject.ViewModels
-@using BlogProject.Services;
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
 
-@inject IImageService ImageService
-@inject UserManager<BlogUser> UserManager
-
-@{
-    BlogUser blogUser = await UserManager.GetUserAsync(User);
-}
-
+@inject IImageService imageService
+@inject UserManager<BlogUser> userManager
+@model PostDetailViewModel
 
 
 <div class="container">
     <article>
         <div class="row">
-            <div class="col">
-                @Html.Raw(Model.Content)
+            <div class="col-9 border-right">
+                @Html.Raw(Model.Post.Content)
             </div>
-@*            <div class="col-3 text-center font-weight-bold h6">
+            <div class="col-3 text-center font-weight-bold h6">
                 <div class="card">
                     <img class="card-img-top" src="/img/tag.jpg" alt="Tags...">
                     <div class="card-body">
@@ -33,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-            </div>*@
+            </div>
         </div>
 
     </article>
@@ -42,7 +37,7 @@
         <hr />
         <h3 class="text-center font-weight-bold">Tags</h3>
         <div class="col text-center">
-            @foreach (var tag in Model.Tags.ToList())
+            @foreach (var tag in Model.Post.Tags.ToList())
             {
                 <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()" class="mb-1 btn btn-sm btn-warning btn-outline-dark">#@tag.Text</a>
             }
@@ -55,8 +50,8 @@
         @if (User.Identity.IsAuthenticated)
         {
             <form asp-action="Create" asp-controller="Comments" method="post">
-                @Html.Hidden("PostId", Model.Id)
-                @Html.Hidden("Slug", Model.Slug)
+                @Html.Hidden("PostId", Model.Post.Id)
+                @Html.Hidden("Slug", Model.Post.Slug)
 
                 <div class="form-group">
                     <label class="h2 control-label font-weight-bold">Add Comment</label>
@@ -77,12 +72,12 @@
         <hr class="card-hr" />
         <br />
 
-        <a id="commentSection" class="btn btn-sm btn-dark btn-block mb-2">@Model.Comments.Count COMMENT(S)</a>
+        <a id="commentSection" class="btn btn-sm btn-dark btn-block mb-2">@Model.Post.Comments.Count COMMENT(S)</a>
 
-        @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+        @foreach (var comment in Model.Post.Comments.OrderByDescending(c => c.Created))
         {
             <div class="media p-3 mb-2 bg-cf media-border">
-                <img src="@ImageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" alt="@comment.BlogUser.FullName" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
+                <img src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" alt="@comment.BlogUser.FullName" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
 
                 <div class="media-body">
                     <h4>@comment.BlogUser.FullName</h4>
@@ -145,7 +140,7 @@
                     }
                     else if (comment.Moderated is not null)
                     {
-                        @comment.ModerateBody
+                        @comment.ModeratedBody
                     }
                     else if (comment.Deleted is null)
                     {
@@ -156,11 +151,10 @@
                     @****************************************************************
                             SECTION 3: CAN WE RENDER THE EDIT BUTTON
                         *****************************************************************@
-                    @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == UserManager.GetUserId(User))
+                    @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
                     {
                         <hr>
-
-                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+                        <button data-toggle="modal" data-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
                     }
 
                     @****************************************************************
@@ -171,7 +165,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-2">
-                                <button class="btn-sm btn-dark font-weight-bold btn-block" data-bs-toggle="modal" data-bs-target="#moderate">MODERATE</button>
+                                <button class="btn-sm btn-dark font-weight-bold btn-block" data-toggle="modal" data-target="#moderate">MODERATE</button>
                             </div>
                             <div class="col-2">
                                 <form asp-action="Delete" asp-controller="Comments">
@@ -201,7 +195,6 @@
                         <div class="modal-body">
                             <form asp-action="Edit" asp-controller="Comments">
                                 @Html.Hidden("Id", comment.Id)
-                                @Html.Hidden("Slug", comment.Post.Slug)
 
                                 <div class="form-group">
                                     <textarea name="Body" class="form-control" required>@comment.Body</textarea>
@@ -213,7 +206,7 @@
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <button type="button" class="btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
+                            <button type="button" class="btn-sm btn-dark font-weight-bold" data-dismiss="modal">CLOSE</button>
                         </div>
 
                     </div>
@@ -235,7 +228,7 @@
                             <form asp-action="Moderate" asp-controller="Comments">
                                 @Html.Hidden("Id", comment.Id)
                                 @Html.Hidden("Body", comment.Body)
-                                @Html.Hidden("Slug", comment.Post.Slug)
+
                                 <div class="form-group">
                                     <label class="control-label">Original Comment</label>
                                     <textarea disabled class="form-control" style="resize:none">@comment.Body</textarea>
@@ -243,7 +236,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Moderated Comment</label>
-                                    <textarea required name="ModeratedBody" class="form-control">@comment.ModerateBody</textarea>
+                                    <textarea required name="ModeratedBody" class="form-control">@comment.ModeratedBody</textarea>
                                 </div>
 
                                 <div class="form-group">
@@ -254,11 +247,10 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col">
-
                                             <button class="btn-sm btn-block btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
                                         </div>
                                         <div class="col">
-                                            <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-bs-dismiss="modal">CLOSE</button>
+                                            <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-dismiss="modal">CLOSE</button>
                                         </div>
                                     </div>
                                 </div>
