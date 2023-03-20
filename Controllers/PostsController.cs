@@ -142,6 +142,14 @@ namespace BlogProject.Controllers
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
+        // GET: Posts/Create
+        [HttpGet]
+        public IActionResult CreateSpecificPost(int id)
+        {
+            ViewData["BlogId"] = id;
+            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View();
+        }
 
         // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

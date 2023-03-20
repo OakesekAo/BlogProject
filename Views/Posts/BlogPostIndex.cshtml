@@ -13,6 +13,23 @@
 
 @model IPagedList<Post>
 
+
+@if (Model != null)
+{
+    var blogId = 0;
+
+    @foreach (var post in Model)
+    {
+        blogId = post.BlogId;
+    }
+    <div class="text-center">
+        <a class="btn btn-dark btn-sm note-btn-block mb-2" asp-action="CreateSpecificPost" asp-controller="Posts" asp-route-id="@blogId">Create Post</a>
+    </div>
+}
+
+
+
+
 <div class="row">
     @foreach (var post in Model)
     {
