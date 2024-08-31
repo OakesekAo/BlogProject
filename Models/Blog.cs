@@ -13,8 +13,10 @@ namespace BlogProject.Models
     {
         //Id of the blog entery
         public int Id { get; set; }
+        
         //author of the entry
         public string BlogUserId { get; set; }
+
         //Title/Description entry
         [Required]
         //passing an error message with 0 = name of variable, 2 = minimumLength value, 1 = 100
